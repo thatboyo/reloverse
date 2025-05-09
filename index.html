@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>reloverse – Coming Soon</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Modern font for style -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: #181a1b;
+      font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+      overflow: hidden;
+    }
+    #bg-dots {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .centerbox {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    .logo {
+      font-size: 3.2rem;
+      background: linear-gradient(90deg, #0ff, #09f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 25px #0ff8;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+    .subtitle {
+      color: #aaa;
+      font-size: 1.35rem;
+      margin-bottom: 2.5rem;
+      letter-spacing: 1px;
+      max-width: 500px;
+    }
+    @media (max-width: 500px) {
+      .logo { font-size: 2rem; }
+      .subtitle { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-dots"></canvas>
+  <div class="centerbox">
+    <div class="logo">reloverse</div>
+    <div class="subtitle">
+      The full website experience is <span style="color:#0ff;">coming soon</span>.<br>
+      Stay tuned for something amazing.<br>
+      <br>
+      <span style="font-size:1.08rem;color:#09f;">join us at discord.gg/2p8szmegBQ!</span>
+    </div>
+  </div>
+  <script>
+    // Floating dots background
+    const canvas = document.getElementById('bg-dots');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const dots = [];
+    for (let i = 0; i < 28; i++) {
+      dots.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.3,
+        dy: (Math.random() - 0.5) * 0.3,
+        alpha: Math.random() * 0.5 + 0.3
+      });
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let dot of dots) {
+        dot.x += dot.dx;
+        dot.y += dot.dy;
+        if (dot.x < 0 || dot.x > canvas.width) dot.dx *= -1;
+        if (dot.y < 0 || dot.y > canvas.height) dot.dy *= -1;
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.r, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(255,255,255,${dot.alpha})`;
+        ctx.shadowColor = "#0ff";
+        ctx.shadowBlur = 10;
+        ctx.fill();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
